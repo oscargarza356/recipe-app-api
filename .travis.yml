@@ -1,0 +1,15 @@
+#what language travis si gonna use
+language: python
+python:
+  - "3.6"
+
+#makes docker service available
+services:
+  - docker
+
+#before it runs anything
+before_script: pip install docker-compose
+
+#and it will run the script
+script:
+  - docker-compose run app sh -c "python manage.py test && flake8"
