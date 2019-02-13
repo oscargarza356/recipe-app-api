@@ -8,7 +8,7 @@ class AdminSiteTests(TestCase):
         # set up the client for future tests
         self.client = Client()
         # create a temporal admin
-        self.admin_user = get_user_model().objects.create_super_user(
+        self.admin_user = get_user_model().objects.create_superuser(
             email='admin@lgs.com',
             password = 'password123'
         )
