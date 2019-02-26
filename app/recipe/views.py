@@ -5,38 +5,32 @@ from rest_framework.permissions import IsAuthenticated
 from core.models import Tag, Ingredient
 from recipe import serializers
 
-#the viewset is a way to use
-class TagViewSet(viewsets.GenericViewSet,
+
+class BaseRecipeAttrViewSet(viewsets.GenericViewSet,
                  mixins.ListModelMixin,
                  mixins.CreateModelMixin):
-    """Mange tags in the database"""
-    #this means that it's required that token authentication is UserAdmin
-    #an that the user is authenticated to use the api
+    """Base Viewset for user owned recipe attributes"""
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
-    queryset = Tag.objects.all()
-    serializer_class = serializers.TagSerializer
 
-    #overrides the already built in method
     def get_queryset(self):
-        """Return objects for the current authenticated user only"""
+        """Return objects for the curren authenticated user only"""
         return self.queryset.filter(user=self.request.user).order_by('-name')
 
     def perform_create(self, serializer):
-        """Createa a new tag"""
+        """Create a new object"""
         serializer.save(user=self.request.user)
 
-class IngredientViewSet(viewsets.GenericViewSet, mixins.ListModelMixin, mixins.CreateModelMixin):
+
+#the viewset is a way to use
+class TagViewSet(BaseRecipeAttrViewSet):
+    """Mange tags in the database"""
+    #this means that it's required that token authentication is UserAdmin
+    #an that the user is authenticated to use the api
+    queryset = Tag.objects.all()
+    serializer_class = serializers.TagSerializer
+
+class IngredientViewSet(BaseRecipeAttrViewSet):
     """Manage Ingredients in database"""
-    authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticated,)
     queryset = Ingredient.objects.all()
     serializer_class = serializers.IngredientSerializer
-
-    def get_queryset(self):
-        """Return objects for the current authenticated user"""
-        return self.queryset.filter(user=self.request.user).order_by('-name')
-
-    def perform_create(self,serializer):
-        """Create a new ingredient"""
-        serializer.save(user=self.request.user)
