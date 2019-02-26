@@ -23,7 +23,7 @@ class UserAdmin(BaseUserAdmin):
             'fields':('email', 'password1', 'password2')
         }),
     )
-#don't remember exactly what UserAdmin does 
+#don't remember exactly what UserAdmin does
 admin.site.register(models.User, UserAdmin)
-
 admin.site.register(models.Tag)
+admin.site.register(models.Ingredient)
