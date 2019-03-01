@@ -3,7 +3,7 @@ from django.test import TestCase
 from django.urls import reverse
 
 from rest_framework import status
-from rest_framework.test import APICLient
+from rest_framework.test import APIClient
 
 from core.models import Recipe
 
@@ -22,7 +22,7 @@ def sample_recipe(user, **params):
     defaults.update(params)
 
     #when you use the asterics when callling a function it has a reverse effect
-    return Recipe.objects.create(user=user, **default)
+    return Recipe.objects.create(user=user, **defaults)
 
 class PublicRecipeApiTest(TestCase):
     """Test unauthenticated recipe API access"""
@@ -42,7 +42,7 @@ class PrivateRecipeApiTests(TestCase):
     def setUp(self):
         self.client = APIClient()
         self.user = get_user_model().objects.create_user(
-            'test@lgs.com',
+            'test21@lgs.com',
             'testpass'
         )
         self.client.force_authenticate(self.user)
@@ -57,7 +57,7 @@ class PrivateRecipeApiTests(TestCase):
         recipes = Recipe.objects.all().order_by('-id')
         serializer = RecipeSerializer(recipes, many=True)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
-        seld.assertEqual(res.data, serializer.data)
+        self.assertEqual(res.data, serializer.data)
 
     def test_recipes_limited_to_user(self):
         """Test retrieving recipes for user"""
