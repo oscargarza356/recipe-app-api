@@ -5,6 +5,8 @@ from django.contrib.auth import get_user_model
 
 from core import models
 
+from django.conf import settings
+from unittest.mock import patch
 
 def sample_user(email='test@lgs.com', password='testpass'):
     """Creates a sample user"""
@@ -74,3 +76,16 @@ class ModelTest(TestCase):
         )
 
         self.assertEqual(str(recipe), recipe.title)
+
+
+    #uuid 4 generates a uuid version 4
+    @patch('uuid.uuid4')
+    def test_recipe_file_name_uuid(self, mock_uuid):
+        """Test that image is saved in the correct location"""
+        #mock uuid function and change the value it returns
+        uuid = 'test-uuid'
+        mock_uuid.return_value = uuid
+        file_path = models.recipe_image_file_path(None, 'myimage.jpg')
+
+        exp_path = f'uploads/recipe/{uuid}.jpg'
+        self.assertEqual(file_path, exp_path)

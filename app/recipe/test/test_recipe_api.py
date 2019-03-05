@@ -200,3 +200,5 @@ class PrivateRecipeApiTests(TestCase):
         self.assertEqual(recipe.time_minutes,payload['time_minutes'])
         self.assertEqual(recipe.price, payload['price'])
         self.assertEqual(len(recipe.tags.all()),0)
+
+    
