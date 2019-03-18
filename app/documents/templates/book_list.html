@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2> Sanitized Documents </h2>
+    <a href='{%url "upload_book" %}' class="btn btn-primary"> Upload Document </a>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Download</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for book in books %}
+        <tr>
+          <td>{{book.title}}</td>
+          <td>{{book.author}}</td>
+          <td><a href="{{book.document.url}}" class = "btn btn-primary btn-sm" target="_blank">
+              Download Sanitized Document
+          </a>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
