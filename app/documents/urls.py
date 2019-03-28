@@ -11,5 +11,3 @@ urlpatterns = [
     url(r'^document/$', views.book_list, name='book_list'),
     url(r'^home/$', views.homePage, name='homePage'),
 ]
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

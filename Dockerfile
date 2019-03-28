@@ -16,6 +16,7 @@ RUN apk add --update --no-cache postgresql-client jpeg-dev
 #set ups an alias for the dependecies and make it easy to remove that dependency later
 RUN apk add --update --no-cache --virtual .tmp-build-deps \
   gcc libc-dev linux-headers postgresql-dev musl-dev zlib zlib-dev
+RUN apk add --update --no-cache g++ gcc libxslt-dev
 RUN pip install -r /requirements.txt
 RUN apk del .tmp-build-deps
 
